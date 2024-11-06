@@ -18,14 +18,7 @@
   "jest": {
     "testEnvironment": "node",
     "coverageDirectory": "./coverage",
-    "collectCoverage": true,
-    "reporters": [
-    "default",
-    [ "jest-junit", {
-      "outputDirectory": "./reports/jest", 
-      "outputName": "jest-test-results.xml" 
-    }]
-  ]
+    "collectCoverage": true
   },
 
   "keywords": [],
