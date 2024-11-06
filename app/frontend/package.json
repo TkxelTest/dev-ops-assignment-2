@@ -26,9 +26,13 @@
       "collectCoverageFrom": [
         "src/**/*.{js,jsx,ts,tsx}",
         "!src/**/*.d.ts"
+      ],
+      "reporters": [
+        "default",
+        ["jest-junit", { "outputDirectory": "./reports/jest", "outputName": "jest-test-results.xml" }]
       ]
     },
-    
+
   "eslintConfig": {
     "extends": [
       "react-app",
