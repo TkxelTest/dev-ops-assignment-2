@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -14,12 +12,23 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage --watchAll=false",
+    "test": "jest --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "install-deps": "npm install",
     "lint": "eslint 'src/**/*.{js,jsx}'"
   },
-  
+    "jest": {
+      "setupFilesAfterEnv": ["<rootDir>/src/setupTests.js"],
+      "moduleNameMapper": {
+        "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+      },
+      "testEnvironment": "jsdom",
+      "collectCoverageFrom": [
+        "src/**/*.{js,jsx,ts,tsx}",
+        "!src/**/*.d.ts"
+      ]
+    },
+    
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -39,7 +48,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.25.9",
     "@eslint/js": "^9.14.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.2",
