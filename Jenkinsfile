@@ -4,7 +4,7 @@ pipeline {
         DOCKER_IMAGE = 'abdulrahmantkxel/dev-ops-assignment-2'
         DOCKER_TAG = "latest"
         DOCKER_TARBALL = 'dev-ops-assignment-2_image.tar'
-        SONAR_TOKEN = credentials('sonar_token') // Add a Jenkins credential for the SonarQube token
+        SONAR_TOKEN = credentials('sonar_token') // Jenkins credential for the SonarQube token
     }
 
     stages {
@@ -46,6 +46,19 @@ pipeline {
         }
 
         // Backend stages
+        stage('Backend - SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    withSonarQubeEnv('SonarQube') { // Replace 'SonarQube' with the actual SonarQube server name configured in Jenkins
+                        dir('app/backend') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Backend - Install Dependencies') {
             steps {
                 dir('app/backend') {
@@ -65,17 +78,6 @@ pipeline {
         stage('Backend - Publish Test Results') {
             steps {
                 junit '**/backend/reports/jest/jest-test-results.xml'
-            }
-        }
-
-        stage('Backend - SonarQube Analysis') {
-            steps {
-                def scannerHome = tool 'SonarScanner';
-                withSonarQubeEnv() {
-                    dir('app/backend') {
-                         sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
             }
         }
 
