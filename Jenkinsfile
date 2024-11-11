@@ -15,6 +15,21 @@ pipeline {
             }
         }
         
+        stage('Frontend - Run Tests') {
+            steps {
+                dir('app/frontend') {
+                    sh 'npm run test'
+                }
+            }
+        }
+
+        stage('Frontend - Publish Test Results') {
+            steps {
+                junit '**/frontend/reports/jest/jest-test-results.xml'
+            }
+        }
+
+
         stage('Frontend - Install Dependencies') {
             steps {
                 dir('app/frontend') {
@@ -31,26 +46,14 @@ pipeline {
             }
         }
 
-        stage('Frontend - Run Tests') {
-            steps {
-                dir('app/frontend') {
-                    sh 'npm run test'
-                }
-            }
-        }
-
-        stage('Frontend - Publish Test Results') {
-            steps {
-                junit '**/frontend/reports/jest/jest-test-results.xml'
-            }
-        }
+        
 
         // Backend stages
         stage('SonarQube Analysis') {
             steps {
                 script {
                     def scannerHome = tool 'SonarScanner'
-                    withSonarQubeEnv('SonarQube') { // Replace with your actual SonarQube server name if needed
+                    withSonarQubeEnv() { // Replace with your actual SonarQube server name if needed
                         dir('app/backend') {
                             sh "${scannerHome}/bin/sonar-scanner"
                         }
