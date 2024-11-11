@@ -4,7 +4,7 @@ pipeline {
         DOCKER_IMAGE = 'abdulrahmantkxel/dev-ops-assignment-2'
         DOCKER_TAG = "latest"
         DOCKER_TARBALL = 'dev-ops-assignment-2_image.tar'
-        SONAR_TOKEN = credentials('sonar_token') // Jenkins credential for the SonarQube token
+        SONAR_TOKEN = credentials('sonar_token') // Make sure this matches your Jenkins credential ID
     }
 
     stages {
@@ -116,11 +116,13 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'app/frontend/build/**/*', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'app/backend/${DOCKER_TARBALL}', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'frontend/reports/jest/jest-test-results.xml', allowEmptyArchive: true
-            archiveArtifacts artifacts: 'backend/coverage/**', allowEmptyArchive: true
-            sh 'docker logout'
+            script {
+                archiveArtifacts artifacts: 'app/frontend/build/**/*', allowEmptyArchive: true
+                archiveArtifacts artifacts: "app/backend/${DOCKER_TARBALL}", allowEmptyArchive: true
+                archiveArtifacts artifacts: 'frontend/reports/jest/jest-test-results.xml', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'backend/coverage/**', allowEmptyArchive: true
+                sh 'docker logout'
+            }
         }
     }
 }
