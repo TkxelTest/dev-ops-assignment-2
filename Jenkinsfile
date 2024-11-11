@@ -49,10 +49,12 @@ pipeline {
         stage('Backend - SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    withSonarQubeEnv('SonarQube') { // Replace 'SonarQube' with the actual SonarQube server name configured in Jenkins
-                        dir('app/backend') {
-                            sh "${scannerHome}/bin/sonar-scanner"
+                   node {
+                        def scannerHome = tool 'SonarScanner'
+                        withSonarQubeEnv('SonarQube') { // Replace with your actual SonarQube server name if needed
+                            dir('app/backend') {
+                                sh "${scannerHome}/bin/sonar-scanner"
+                            }
                         }
                     }
                 }
