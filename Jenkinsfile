@@ -54,6 +54,12 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarScanner'
                     withSonarQubeEnv() { // Replace with your actual SonarQube server name if needed
+                    sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=TkxelTest_dev-ops-assignment-2_22d7f806-a09f-45fe-b07e-08ffe00f741a\
+                        -Dsonar.projectName="dev-ops-assignment-2" \
+                        -Dsonar.projectVersion=1.0
+                    """
                         dir('app/backend') {
                             sh "${scannerHome}/bin/sonar-scanner"
                         }
